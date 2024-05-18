@@ -7,18 +7,49 @@ class TextEditor(Tk):
         super().__init__()
         self.title("Text Editor")
         self.geometry('560x480')
-        self.textarea = Text(self)
-        self.btn = Button(self, text="Enregistrer", command=self.save)
 
-        self.textarea.pack(expand=True, fill='both')
-        self.btn.pack()
+        # adding some widget
+        self.textarea = Text(self, borderwidth=0)
+        self.menubar = Menu(self)
+
+        # addign menu items
+        self.menubar.add_command(label="Ouvrir",command= self.open_file)
+        self.menubar.add_command(label="Enregistrer",command= self.save)
+        self.menubar.add_command(label="Quiter",command= self.quit)
+
+        # packing
+        self.textarea.pack(expand=True, fill='both', padx=5, pady=5)
+        self.config(menu=self.menubar)
 
     def save(self):
         content = self.textarea.get('1.0', "end-1c")
-        savedirectory = filedialog.asksaveasfilename()
+        savedirectory = filedialog.asksaveasfilename(
+            filetypes=(
+                ("Text File", '*.txt'),
+                ("Python File", '*.py'),
+                ("All Files", '*.*')
+            )
+        )
+        if not savedirectory:
+            return None
         with open(savedirectory, 'w', encoding='utf-8') as fl:
             fl.write(content)
         print(savedirectory)
+
+    def open_file(self):
+        content = filedialog.askopenfilename(
+            filetypes=(
+                ("Text File", '*txt'),
+                ("Python File", "*.py"),
+                ("All File", '*.*'),
+            )
+        )
+        if not content:
+            return None
+        with open(content, 'r', encoding='utf-8') as ct:
+            self.textarea.delete('1.0', END)
+            self.textarea.insert('1.0', ct.read())
+
 
 
 if __name__ == '__main__':
