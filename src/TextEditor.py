@@ -1,6 +1,8 @@
 from tkinter import *
+from tkinter import filedialog
 
 class TextEditor(Tk):
+
     def __init__(self):
         super().__init__()
         self.title("Text Editor")
@@ -12,7 +14,11 @@ class TextEditor(Tk):
         self.btn.pack()
 
     def save(self):
-        print(self.textarea.get("1.0", "end-1c"))
+        content = self.textarea.get('1.0', "end-1c")
+        savedirectory = filedialog.asksaveasfilename()
+        with open(savedirectory, 'w', encoding='utf-8') as fl:
+            fl.write(content)
+        print(savedirectory)
 
 
 if __name__ == '__main__':
