@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter import messagebox
 
 class TextEditor(Tk):
 
@@ -13,8 +14,13 @@ class TextEditor(Tk):
         self.menubar = Menu(self)
 
         # addign menu items
-        self.menubar.add_command(label="Ouvrir",command= self.open_file)
-        self.menubar.add_command(label="Enregistrer",command= self.save)
+        self.file = Menu(self.menubar)
+        self.menubar.add_cascade(label="Fichier", menu=self.file)
+
+        self.file.add_command(label="Ouvrir",command= self.open_file)
+        self.file.add_command(label="Enregistrer",command= self.save)
+
+        self.menubar.add_command(label="About",command= self.about)
         self.menubar.add_command(label="Quiter",command= self.quit)
 
         # packing
@@ -49,6 +55,10 @@ class TextEditor(Tk):
         with open(content, 'r', encoding='utf-8') as ct:
             self.textarea.delete('1.0', END)
             self.textarea.insert('1.0', ct.read())
+
+    def about(self):
+        messagebox.showinfo("About", "Text-Editor App \nVersion 2.0.0")
+
 
 
 
