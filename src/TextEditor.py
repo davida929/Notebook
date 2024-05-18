@@ -27,7 +27,12 @@ class TextEditor(Tk):
         self.textarea.pack(expand=True, fill='both', padx=5, pady=5)
         self.config(menu=self.menubar)
 
-    def save(self):
+        # binding Keyboard
+        self.bind('<Control-s>', self.save)
+        self.bind('<Control-o>', self.open_file)
+        self.bind('<Control-q>', self.quit)
+
+    def save(self, event=None):
         content = self.textarea.get('1.0', "end-1c")
         savedirectory = filedialog.asksaveasfilename(
             filetypes=(
@@ -42,7 +47,7 @@ class TextEditor(Tk):
             fl.write(content)
         print(savedirectory)
 
-    def open_file(self):
+    def open_file(self, event=None):
         content = filedialog.askopenfilename(
             filetypes=(
                 ("Text File", '*txt'),
@@ -58,6 +63,9 @@ class TextEditor(Tk):
 
     def about(self):
         messagebox.showinfo("About", "Text-Editor App \nVersion 2.0.0")
+
+    def quit(self, event=None):
+        super().quit()
 
 
 
